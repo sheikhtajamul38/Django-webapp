@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ 
+  <div id="wrapper">
+		
+    <div id="box">
+    <p id="header">Number Guessing Game 🤪</p>
+			<div id="container">
+        <p id="question">I'll pick a number between,<br/> 1 and 100.<br><br>Try to guess it.<br/><br/>What is your first guess?</p>
+      </div>
+      <div id="reniatnoc">
+        <p><input type="text" id="guess">
+          <button onclick="guess()">Guess</button></p>
+      </div>
+      <div id="response"><p id="message"></p></div>
+    </div>
+  </div>
+
+<style type="text/css">
+	
+body {
+	width: 100%;
+	background-color: #bbbac1;
+	background-repeat: repeat;
+	background-size: 100vw 100vh;
+	background-image: linear-gradient(to bottom right, #bbbac1, #000);
+	font-family:'Roboto Slab', 'Nova Square',  monospace, serif;
+}
+#wrapper{
+width:400px;
+margin:0px auto;
+background:rgba(255,255,255,0.2);
+padding:20px 20px 60px 20px;
+margin-top:20px;
+	border:0px;
+	border-radius:90px;
+	box-shadow:inset 0px 0px 20px rgba(0,0,0,0.3);
+}
+#box{
+width:300px;
+margin:0px auto;
+}
+#container{
+width:300px;
+height:150px;
+background:#0065A5;
+border:0px;
+border-radius:5px;
+text-align:center;
+box-shadow:0px 0px 5px #333333, inset 0px 0px 5px #232B7B;
+-webkit-box-shadow:0px 0px 5px #333333, inset 0px 0px 5px #232B7B;
+}
+#header{
+	font-family: 'Open Sans', sans-serif;
+	font-weight:600;
+	text-align:center;
+	color:rgba(0,0,0,0.5);
+}
+#container p{
+padding:5px 5px 5px 5px;
+font-family: 'Open Sans', sans-serif;
+color:#fff;
+font-weight:600;
+}
+#reniatnoc{
+margin:-5px 0px 0px 0px;
+text-align:center;
+width:300px;
+height:45px;
+background:#0065A5;
+border:0px;
+border-radius:5px;
+box-shadow:0px 0px 5px #333333, inset 0px 0px 5px #232B7B;
+-webkit-box-shadow:0px 0px 5px #333333, inset 0px 0px 5px #232B7B;
+}
+#reniatnoc p{
+padding:10px 0px 0px 0px;
+}
+#response{
+text-align:center;
+width:300px;
+height:auto;
+background:#fff;
+margin:-5px 0px 0px 0px;
+border:0px;
+border-radius:5px;
+box-shadow: 0px 0px 3px rgba(0,0,0,0.7);
+}
+#response p{
+color:#ff0000;
+font-family: 'Open Sans', sans-serif;
+font-weight:700;
+}
+
+</style>
+
+<script type="text/javascript">
+	
+    "use strict";																		
+    var number = Math.floor( 1 + 100*Math.random() );									
+    var guessCount = 0;																	
+    var guessMessage = "Your guesses so far: ";											
+    function guess() {																	
+        var userNumber = Number( document.getElementById("guess").value );
+        document.getElementById("guess").value = "";
+        if ( isNaN(userNumber) || userNumber < 1 || userNumber > 100 ) {
+            document.getElementById("question").innerHTML =
+               "Bad input!<br>Try again with an integer in the range 1 to 100.";
+        }
+        else if (userNumber == number) {
+            guessCount++;
+            document.getElementById("question").innerHTML =
+                "You got it in " + guessCount + " guesses. " +
+                userNumber + " is correct.<br>" + 
+                "I have picked another number.  Make a guess!";
+            number = Math.floor( 1 + 100*Math.random() );
+            guessCount = 0;
+            guessMessage = "Your guesses so far: ";
+            document.getElementById("message").innerHTML = "";
+        }
+        else if (userNumber < number) {
+            guessCount++;
+            document.getElementById("question").innerHTML =
+                userNumber + " is too low.<br>Try again.";
+            guessMessage += " " + userNumber;
+            document.getElementById("message").innerHTML = guessMessage;
+        }
+        else {
+            guessCount++;
+            document.getElementById("question").innerHTML =
+                userNumber + " is too high.<br>Try again.";
+            guessMessage += " " + userNumber;
+            document.getElementById("message").innerHTML = guessMessage;
+        }
+    }
+
+
+</script>
+{% endblock %}

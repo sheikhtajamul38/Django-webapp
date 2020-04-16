@@ -1,0 +1,325 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>count down clock</title>
+	<link rel="stylesheet" type="text/css" href="main.css" />
+	<link rel="stylesheet"
+		  href="https://fonts.googleapis.com/css?family=Nova+Square" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+	<div class="aligner">
+		<header>
+			<h1>Count Down Clock</h1>
+		</header>
+		<div id="container">
+			<div class="flex-container">
+				<div class="hour box">
+					<span id="hr">00</span>
+				</div>
+				<div class="col">
+					<span>:</span>
+				</div>
+				<div class="minute box">
+					<span id="min">00</span>
+				</div>
+				<div class="col">
+					<span>:</span>
+				</div>
+				<div class="second box">
+					<span id="sec">00</span>
+				</div>
+			</div>
+			<div class="flex-container">
+				<div class="up-down btns-left box">
+					<div class="hr-btn" id="lt-hr" data-button="<">&#8679;</div>
+					<div class="hr-btn" id="rt-hr" data-button=">">&#8681;</div>
+				</div>
+				<div class="up-down btns-middle box">
+					<div class="min-btn" id="lt-min" data-button="<">&#8679;</div>
+					<div class="min-btn" id="rt-min" data-button=">">&#8681;</div>
+				</div>
+				<div class="up-down btns-right box">
+					<div class="sec-btn" id="lt-sec" data-button="<">&#8679;</div>
+					<div class="sec-btn" id="rt-sec" data-button=">">&#8681;</div>
+				</div>
+			</div>
+			<div class="flex-container">
+				<div class="control-btn">
+					<div id="start">START</div>
+					<div id="stop">STOP</div>
+					<div id="reset">RESET</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	
+	<script src="main.js"></script>
+</body>
+</html>
+
+<style type="text/css">
+	@charset "utf-8";
+
+/* font for clock numbers*/
+@font-face{
+	font-family:'digital-clock';
+	src: url('digital-7(mono).ttf') format('truetype');
+}
+
+/* full page 
+body {
+	width: 95%;
+	background-color: #bbbac1;
+	background-repeat: no-repeat;
+	background-size: 100vw 100vh;
+	background-image: linear-gradient(to bottom right, #bbbac1, #000);
+	font-family:'Roboto Slab', 'Nova Square',  monospace, serif;
+}*/
+body {
+	width: 100%;
+	background-color: #bbbac1;
+	background-repeat: repeat;
+	background-size: 100vw 100vh;
+	background-image: linear-gradient(to bottom right, #bbbac1, #000);
+	font-family:'Roboto Slab', 'Nova Square',  monospace, serif;
+}
+.aligner { margin-top: 80px;	}
+
+/* title */
+header {
+	text-align: center;
+	color: green;
+	text-shadow: 1px 1px 5px white;
+}
+
+/* main clock container*/
+#container {
+	display: flex;
+	flex-wrap: wrap;
+	width: 60%;
+	min-width: 350px;
+	margin: auto;
+	border: 1px solid green;
+	border-radius: 25px;
+	background-color: black;
+	color: green;
+	box-shadow: 1px 1px 20px green;
+}
+
+/* body flex-box */
+.flex-container {
+	display: flex;
+	width: 100%;
+	min-width: 300px;
+	margin: auto;
+	border-bottom: 1px solid green;
+	border-radius: 25px;
+}
+
+/* takes out very bottom border */
+.flex-container:last-child{
+	border: none;
+}
+
+/* inside container box grid */
+div.flex-container > div.box {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	font-size: 2em;
+	text-align: center;
+	min-width: 70px;
+}
+
+/* numbers */
+span#hr, span#min, span#sec {
+	font-size: 2em;
+}
+
+/* for the colon layout*/
+.col {
+	margin: 0 -7px;
+	font-size: 3em;
+}
+div.up-down {
+	display: flex;
+	justify-content: space-around;
+}
+
+/* all up/down btns */
+div.hr-btn, div.min-btn, div.sec-btn {
+	width: 50%;
+	margin: 0;
+	padding: 0;
+	border-right: 1px solid green;
+}
+div.sec-btn:last-child {
+	border: none;
+}
+
+/* take out select on double click */
+div.hr-btn:hover, div.min-btn:hover, div.sec-btn:hover {
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+div.flex-container > div.control-btn {
+	display: flex;
+	justify-content: space-around;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	font-size: 1.5em;
+	text-align: center;
+	min-width: 70px;
+}
+
+/* stop/stop container */
+div.control-btn{
+	width: 100%;
+	text-align: center;
+}
+
+
+/* start stop button */
+div#start, div#stop, div#reset {
+	width: 40%;
+	font-size: 1.5em;
+	border-right: 1px solid green;
+}
+div#reset:last-child {
+	border: none;
+}
+
+/* take out select on double click */
+div#start:hover, div#stop:hover, div#reset:hover {
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+</style>
+<script type="text/javascript">
+
+window.onload = function() {
+	// gets class names of up and down buttons
+	let hourBtn = document.getElementsByClassName('hr-btn');
+	let minBtn = document.getElementsByClassName('min-btn');
+	let secBtn = document.getElementsByClassName('sec-btn');
+
+	let hour = document.getElementById('hr');
+	let min = document.getElementById('min');
+	let sec = document.getElementById('sec');
+	var stopInt;
+	function hourClock(e){
+		let int = parseInt(hour.innerHTML)
+
+		if(e.target.dataset.button == '<') {
+			int += 1;
+			hour.innerHTML = int;
+		}else if(e.target.dataset.button == '>'){
+			int -= 1;
+			if(int <= 0){
+				return hour.innerHTML = '00';
+			}
+			hour.innerHTML = int;
+		}
+	}
+	function minClock(e) {
+		let int = parseInt(min.innerHTML)
+
+		if(e.target.dataset.button== '<') {
+			int += 1;
+			min.innerHTML = int;
+			if (int > 59){
+				return min.innerHTML = 0;
+			}
+		}else if(e.target.dataset.button == '>'){
+			int -= 1;
+			min.innerHTML = int;
+			if(int < 0){
+				return min.innerHTML = 59;
+			}
+		}
+	}
+	function secClock(e) {
+		let int = parseInt(sec.innerHTML)
+
+		if(e.target.dataset.button == '<') {
+			int += 1;
+			sec.innerHTML = int;
+			// will not go higher *loop
+			if(int > 59) {
+				return sec.innerHTML = 0;
+			}
+		}else if(e.target.dataset.button == '>'){
+			int -= 1;
+			sec.innerHTML = int;
+			// will not go lower *loop
+			if(int < 0){
+				return sec.innerHTML = 59;
+			}
+		}
+	}
+
+
+	for (let i = 0; i < hourBtn.length; i++) {
+		hourBtn[i].addEventListener('click', hourClock);
+		minBtn[i].addEventListener('click', minClock);
+		secBtn[i].addEventListener('click', secClock);
+	}
+
+	function run() {
+		if(sec.innerHTML == 0){
+			if (min.innerHTML == 0) {
+				if(hour.innerHTML == 0) {
+					hour.innerHTML = '00';
+
+				}else{
+					hour.innerHTML -= 1;
+					min.innerHTML = 59;
+					sec.innerHTML = 59;
+				}
+			}else{
+				min.innerHTML -= 1;
+				sec.innerHTML = 59;
+			}
+		}else{
+			sec.innerHTML -= 1;
+		}
+
+		if(sec.innerHTML == 0 && min.innerHTML <= 0 && hour.innerHTML <= 0){
+			clearInterval(stopInt);
+		}
+	}
+
+	document.getElementById('start').addEventListener('click', function(){
+		stopInt = setInterval(run, 1000);
+	})
+	document.getElementById('stop').addEventListener('click', function(){
+		clearInterval(stopInt);
+	})
+	document.getElementById('reset').addEventListener('click', function(){
+		hour.innerHTML = "00";
+		min.innerHTML = "00";
+		sec.innerHTML = "00";
+	})
+
+	
+};
+
+
+</script>
+{% endblock %}

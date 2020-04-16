@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Temperature Converter</h1>
+
+<input type="text" id="fahrenheit" placeholder="Fahrenheit" name="f" value="" />
+
+<input type="text" id="celsius" placeholder="Celsius" name="c" value="" />
+
+<button id="convert">Convert!</button>
+<button id="clear">Reset</button>
+
+<style>
+
+	body {
+	width: 100%;
+	background-color: #bbbac1;
+	background-repeat: repeat;
+	background-size: 100vw 100vh;
+	background-image: linear-gradient(to bottom right, #bbbac1, #000);
+	font-family:'Roboto Slab', 'Nova Square',  monospace, serif;
+}
+#convert {
+  background-color: #bba768;
+}
+#convert:hover {
+  background-color: #bcc768;
+}
+h1 {
+  font-family: sans-serif;
+  color: #70b2e5;
+}
+input {
+  display: block;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 2em;
+  color: #f4a55a;
+  font-family: cursive, sans-serif;
+}
+::-webkit-input-placeholder {
+   color: #ccc;
+}
+:-moz-placeholder { /* Firefox 18- */
+   color: #ccc;  
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #ccc;  
+}
+:-ms-input-placeholder {  
+   color: #ccc;  
+}
+button {
+  padding: 10px;
+  font-size: 1.2em;
+  color: #545454;
+}
+</style>
+<script >
+ document.getElementById('convert').onclick = tempConvert;
+document.getElementById('clear').onclick = clearForm;
+
+function tempConvert() {
+    
+    var fahrenheit = document.getElementById("fahrenheit").value;
+    var celsius = document.getElementById("celsius").value;
+  
+  if (fahrenheit != '') {
+        celsius = (parseFloat(fahrenheit) - 32) / 1.8;
+    } else {
+        fahrenheit = (parseFloat(celsius) * 1.8) + 32;
+    }
+  
+
+
+    document.getElementById('fahrenheit').value = parseFloat(fahrenheit).toFixed(1);
+    document.getElementById('celsius').value = parseFloat(celsius).toFixed(1);
+}
+
+
+function clearForm() {
+    document.getElementById('fahrenheit').value = '';
+    document.getElementById('celsius').value = '';
+} 
+</script>
+{% endblock %}
